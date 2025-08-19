@@ -1,7 +1,7 @@
-
 # bind
 
-`bind` is a Go library for binding [OpenTelemetry] synchronous metric instruments to attributes. This can greatly improver performance for instrumentation when measurements are only recorded for known static attribute sets.
+`bind` is a Go library for binding [OpenTelemetry] synchronous metric instruments to attributes.
+This can greatly improver performance for instrumentation when measurements are only recorded for known static attribute sets.
 
 ## Installation
 
@@ -13,7 +13,7 @@ go get github.com/MrAlias/bind
 
 ```go
 import (
-    "github.com/MrAlias/bind"
+	"github.com/MrAlias/bind"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/metric"
 )
@@ -27,16 +27,18 @@ counter.Add(ctx, 1.0)
 // Measured with {"user": "Alice", "id: 1}
 counter.Add(ctx, 2.0, metric.WithAttributes(attribute.Int("id", 1)))
 
+// Bind additional attributes to the counter.
 counter = bind.Float64Counter(counter, attribute.Bool("admin", true))
 
 // Measure with {"user": "Alice", "admin": true}
 counter.Add(ctx, -1.0)
 
-// Unwrap to get the underlying instrument (i.e. myCounter) and attributes (i.e. {"user": "Alice", "admin": true})
+// Unwrap to get the underlying instrument (i.e. myCounter) and attributes
+// (i.e. {"user": "Alice", "admin": true})
 base, attrs := bind.Unwrap(counter)
 ```
 
-See [GoDoc](https://pkg.go.dev/github.com/MrAlias/bind) for full API documentation and examples.
+See [GoDoc] for full API documentation and examples.
 
 ## Contributing
 
@@ -47,3 +49,4 @@ Contributions are welcome! Please open issues or pull requests on [GitHub](https
 Licensed under the [Apache 2.0 License](LICENSE).
 
 [OpenTelemetry]: opentelemetry.io
+[GoDoc]: https://pkg.go.dev/github.com/MrAlias/bind
