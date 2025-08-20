@@ -10,6 +10,7 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/metric/embedded"
+	"go.opentelemetry.io/otel/metric/noop"
 )
 
 type mockFloat64UpDownCounter struct {
@@ -70,4 +71,32 @@ func TestFloat64UpDownCounterUnwrap(t *testing.T) {
 
 	want := []attribute.KeyValue{userAlice, userID}
 	assert.ElementsMatch(t, want, set.ToSlice(), "unwrapped attributes")
+}
+
+func BenchmarkFloat64UpDownCounterAdd(b *testing.B) {
+	ctx := context.Background()
+	base := noop.Float64UpDownCounter{}
+
+	b.Run("BoundOnly", func(b *testing.B) {
+		bound := bind.Float64UpDownCounter(base, userAlice, userID)
+
+		b.ReportAllocs()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				bound.Add(ctx, 1.0)
+			}
+		})
+	})
+
+	b.Run("AddAddr", func(b *testing.B) {
+		bound := bind.Float64UpDownCounter(base, userAlice, userID)
+		extra := []metric.AddOption{metric.WithAttributes(adminTrue)}
+
+		b.ReportAllocs()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				bound.Add(ctx, 1.0, extra...)
+			}
+		})
+	})
 }
