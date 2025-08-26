@@ -14,6 +14,10 @@ import (
 // If inst is already bound to attributes, attrs will be merged into those
 // attributes for the returned instrument.
 func Float64Gauge(inst metric.Float64Gauge, attrs ...attribute.KeyValue) metric.Float64Gauge {
+	if len(attrs) == 0 {
+		return inst
+	}
+
 	if i, ok := inst.(float64Gauge); ok {
 		// Flatten the instrument if already bound.
 		inst = i.inst

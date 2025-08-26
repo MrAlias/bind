@@ -34,6 +34,12 @@ func (m *mockFloat64Gauge) Recorded() (*float64, []attribute.KeyValue) {
 	return m.val, set.ToSlice()
 }
 
+func TestFloat64GaugeEmptyAttrs(t *testing.T) {
+	mock := &mockFloat64Gauge{}
+	got := bind.Float64Gauge(mock)
+	assert.Same(t, mock, got, "bound should be the same as the input")
+}
+
 func TestFloat64Gauge(t *testing.T) {
 	tests := []TestCase[float64]{
 		{"BoundOnly", 3.14, nil},

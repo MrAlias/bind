@@ -34,6 +34,12 @@ func (m *mockInt64UpDownCounter) Recorded() (*int64, []attribute.KeyValue) {
 	return m.incr, set.ToSlice()
 }
 
+func TestInt64UpDownCounterEmptyAttrs(t *testing.T) {
+	mock := &mockInt64UpDownCounter{}
+	got := bind.Int64UpDownCounter(mock)
+	assert.Same(t, mock, got, "bound should be the same as the input")
+}
+
 func TestInt64UpDownCounter(t *testing.T) {
 	tests := []TestCase[int64]{
 		{"BoundOnly", 100, nil},

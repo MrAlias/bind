@@ -34,6 +34,12 @@ func (m *mockInt64Histogram) Recorded() (*int64, []attribute.KeyValue) {
 	return m.val, set.ToSlice()
 }
 
+func TestInt64HistogramEmptyAttrs(t *testing.T) {
+	mock := &mockInt64Histogram{}
+	got := bind.Int64Histogram(mock)
+	assert.Same(t, mock, got, "bound should be the same as the input")
+}
+
 func TestInt64Histogram(t *testing.T) {
 	tests := []TestCase[int64]{
 		{"BoundOnly", 11, nil},

@@ -14,6 +14,10 @@ import (
 // If inst is already bound to attributes, attrs will be merged into those
 // attributes for the returned instrument.
 func Float64Counter(inst metric.Float64Counter, attrs ...attribute.KeyValue) metric.Float64Counter {
+	if len(attrs) == 0 {
+		return inst
+	}
+
 	if i, ok := inst.(float64Counter); ok {
 		// Flatten the instrument if already bound.
 		inst = i.inst

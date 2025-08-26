@@ -34,6 +34,12 @@ func (m *mockFloat64Counter) Recorded() (*float64, []attribute.KeyValue) {
 	return m.incr, set.ToSlice()
 }
 
+func TestFloat64CounterEmptyAttrs(t *testing.T) {
+	mock := &mockFloat64Counter{}
+	got := bind.Float64Counter(mock)
+	assert.Same(t, mock, got, "bound should be the same as the input")
+}
+
 func TestFloat64Counter(t *testing.T) {
 	tests := []TestCase[float64]{
 		{"BoundOnly", 42.0, nil},

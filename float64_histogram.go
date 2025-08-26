@@ -14,6 +14,10 @@ import (
 // If inst is already bound to attributes, attrs will be merged into those
 // attributes for the returned instrument.
 func Float64Histogram(inst metric.Float64Histogram, attrs ...attribute.KeyValue) metric.Float64Histogram {
+	if len(attrs) == 0 {
+		return inst
+	}
+
 	if i, ok := inst.(float64Histogram); ok {
 		// Flatten the instrument if already bound.
 		inst = i.inst
