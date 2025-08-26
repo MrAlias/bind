@@ -54,6 +54,11 @@ func TestInt64Counter(t *testing.T) {
 			test,
 		))
 	}
+
+	t.Run(
+		"NoSideEffets",
+		testNoSideEffects(bind.Int64Counter, &mockInt64Counter{}),
+	)
 }
 
 func measInt64Counter(i metric.Int64Counter, ctx context.Context, incr int64, attr []attribute.KeyValue) {

@@ -18,16 +18,25 @@ func Float64Histogram(inst metric.Float64Histogram, attrs ...attribute.KeyValue)
 		return inst
 	}
 
+	// NewSet sorts passed attributes. Copy to avoid side effect.
+	var cp []attribute.KeyValue
+
 	if i, ok := inst.(float64Histogram); ok {
 		// Flatten the instrument if already bound.
 		inst = i.inst
-		attrs = append(i.attrs, attrs...)
+
+		cp = make([]attribute.KeyValue, 0, len(i.attrs)+len(attrs))
+		cp = append(cp, i.attrs...)
+		cp = append(cp, attrs...)
+	} else {
+		cp = make([]attribute.KeyValue, len(attrs))
+		copy(cp, attrs)
 	}
 
-	set := attribute.NewSet(attrs...)
+	set := attribute.NewSet(cp...)
 	return float64Histogram{
 		inst:  inst,
-		attrs: attrs,
+		attrs: cp,
 		set:   set,
 		o:     []metric.RecordOption{metric.WithAttributeSet(set)},
 	}

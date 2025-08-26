@@ -18,16 +18,25 @@ func Int64UpDownCounter(inst metric.Int64UpDownCounter, attrs ...attribute.KeyVa
 		return inst
 	}
 
+	// NewSet sorts passed attributes. Copy to avoid side effect.
+	var cp []attribute.KeyValue
+
 	if i, ok := inst.(int64UpDownCounter); ok {
 		// Flatten the instrument if already bound.
 		inst = i.inst
-		attrs = append(i.attrs, attrs...)
+
+		cp = make([]attribute.KeyValue, 0, len(i.attrs)+len(attrs))
+		cp = append(cp, i.attrs...)
+		cp = append(cp, attrs...)
+	} else {
+		cp = make([]attribute.KeyValue, len(attrs))
+		copy(cp, attrs)
 	}
 
-	set := attribute.NewSet(attrs...)
+	set := attribute.NewSet(cp...)
 	return int64UpDownCounter{
 		inst:  inst,
-		attrs: attrs,
+		attrs: cp,
 		set:   set,
 		o:     []metric.AddOption{metric.WithAttributeSet(set)},
 	}

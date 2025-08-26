@@ -54,6 +54,11 @@ func TestFloat64Histogram(t *testing.T) {
 			test,
 		))
 	}
+
+	t.Run(
+		"NoSideEffets",
+		testNoSideEffects(bind.Float64Histogram, &mockFloat64Histogram{}),
+	)
 }
 
 func measFloat64Histogram(i metric.Float64Histogram, ctx context.Context, val float64, attr []attribute.KeyValue) {

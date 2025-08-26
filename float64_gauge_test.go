@@ -54,6 +54,11 @@ func TestFloat64Gauge(t *testing.T) {
 			test,
 		))
 	}
+
+	t.Run(
+		"NoSideEffets",
+		testNoSideEffects(bind.Float64Gauge, &mockFloat64Gauge{}),
+	)
 }
 
 func measFloat64Gauge(i metric.Float64Gauge, ctx context.Context, val float64, attr []attribute.KeyValue) {

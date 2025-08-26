@@ -54,6 +54,11 @@ func TestFloat64Counter(t *testing.T) {
 			test,
 		))
 	}
+
+	t.Run(
+		"NoSideEffets",
+		testNoSideEffects(bind.Float64Counter, &mockFloat64Counter{}),
+	)
 }
 
 func measFloat64Counter(i metric.Float64Counter, ctx context.Context, incr float64, attr []attribute.KeyValue) {

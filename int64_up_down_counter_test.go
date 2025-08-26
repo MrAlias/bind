@@ -54,6 +54,11 @@ func TestInt64UpDownCounter(t *testing.T) {
 			test,
 		))
 	}
+
+	t.Run(
+		"NoSideEffets",
+		testNoSideEffects(bind.Int64UpDownCounter, &mockInt64UpDownCounter{}),
+	)
 }
 
 func measInt64UpDownCounter(i metric.Int64UpDownCounter, ctx context.Context, incr int64, attr []attribute.KeyValue) {

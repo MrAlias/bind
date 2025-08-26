@@ -15,6 +15,12 @@ var (
 	adminTrue = attribute.Bool("admin", true)
 )
 
+func clone(in ...attribute.KeyValue) (orig, cp []attribute.KeyValue) {
+	cp = make([]attribute.KeyValue, len(in))
+	copy(cp, in)
+	return in, cp
+}
+
 type TestCase[N any] struct {
 	Name     string
 	Measure  N
@@ -51,5 +57,21 @@ func Run[T any, N any](mock Mock[T, N], b Binder[T], m Measure[T, N], test TestC
 		want := []attribute.KeyValue{userAlice, userID}
 		want = append(want, test.AddAttrs...)
 		assert.ElementsMatch(t, want, attrs, "attributes in config")
+	}
+}
+
+func testNoSideEffects[T any, N any](binder Binder[T], mock Mock[T, N]) func(*testing.T) {
+	a, cpA := clone(attribute.Int("C", 3), attribute.Int("B", 2))
+	b, cpB := clone(attribute.Int("D", 4), attribute.Int("A", 1))
+
+	return func(t *testing.T) {
+		t.Helper()
+
+		i := binder(mock.Instrument(), a...)
+		assert.Equal(t, cpA, a)
+
+		_ = binder(i, b...)
+		assert.Equal(t, cpA, a)
+		assert.Equal(t, cpB, b)
 	}
 }

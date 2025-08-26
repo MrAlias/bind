@@ -54,6 +54,11 @@ func TestInt64Histogram(t *testing.T) {
 			test,
 		))
 	}
+
+	t.Run(
+		"NoSideEffets",
+		testNoSideEffects(bind.Int64Histogram, &mockInt64Histogram{}),
+	)
 }
 
 func measInt64Histogram(i metric.Int64Histogram, ctx context.Context, val int64, attr []attribute.KeyValue) {

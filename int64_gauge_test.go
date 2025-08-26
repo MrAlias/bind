@@ -54,6 +54,11 @@ func TestInt64Gauge(t *testing.T) {
 			test,
 		))
 	}
+
+	t.Run(
+		"NoSideEffets",
+		testNoSideEffects(bind.Int64Gauge, &mockInt64Gauge{}),
+	)
 }
 
 func measInt64Gauge(i metric.Int64Gauge, ctx context.Context, val int64, attr []attribute.KeyValue) {
