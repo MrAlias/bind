@@ -16,13 +16,16 @@ import (
 type mockInt64Histogram struct {
 	embedded.Int64Histogram
 
-	val  *int64
-	opts []metric.RecordOption
+	name     string
+	instOpts []metric.Int64HistogramOption
+
+	val     *int64
+	recOpts []metric.RecordOption
 }
 
 func (m *mockInt64Histogram) Record(ctx context.Context, val int64, opts ...metric.RecordOption) {
 	m.val = &val
-	m.opts = opts
+	m.recOpts = opts
 }
 
 func (m *mockInt64Histogram) Instrument() metric.Int64Histogram {
@@ -30,7 +33,7 @@ func (m *mockInt64Histogram) Instrument() metric.Int64Histogram {
 }
 
 func (m *mockInt64Histogram) Recorded() (*int64, []attribute.KeyValue) {
-	set := metric.NewRecordConfig(m.opts).Attributes()
+	set := metric.NewRecordConfig(m.recOpts).Attributes()
 	return m.val, set.ToSlice()
 }
 

@@ -16,13 +16,16 @@ import (
 type mockFloat64Counter struct {
 	embedded.Float64Counter
 
-	incr *float64
-	opts []metric.AddOption
+	name     string
+	instOpts []metric.Float64CounterOption
+
+	incr    *float64
+	addOpts []metric.AddOption
 }
 
 func (m *mockFloat64Counter) Add(ctx context.Context, incr float64, opts ...metric.AddOption) {
 	m.incr = &incr
-	m.opts = opts
+	m.addOpts = opts
 }
 
 func (m *mockFloat64Counter) Instrument() metric.Float64Counter {
@@ -30,7 +33,7 @@ func (m *mockFloat64Counter) Instrument() metric.Float64Counter {
 }
 
 func (m *mockFloat64Counter) Recorded() (*float64, []attribute.KeyValue) {
-	set := metric.NewAddConfig(m.opts).Attributes()
+	set := metric.NewAddConfig(m.addOpts).Attributes()
 	return m.incr, set.ToSlice()
 }
 

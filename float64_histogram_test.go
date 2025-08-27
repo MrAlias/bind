@@ -16,13 +16,16 @@ import (
 type mockFloat64Histogram struct {
 	embedded.Float64Histogram
 
-	val  *float64
-	opts []metric.RecordOption
+	name     string
+	instOpts []metric.Float64HistogramOption
+
+	val     *float64
+	recOpts []metric.RecordOption
 }
 
 func (m *mockFloat64Histogram) Record(ctx context.Context, val float64, opts ...metric.RecordOption) {
 	m.val = &val
-	m.opts = opts
+	m.recOpts = opts
 }
 
 func (m *mockFloat64Histogram) Instrument() metric.Float64Histogram {
@@ -30,7 +33,7 @@ func (m *mockFloat64Histogram) Instrument() metric.Float64Histogram {
 }
 
 func (m *mockFloat64Histogram) Recorded() (*float64, []attribute.KeyValue) {
-	set := metric.NewRecordConfig(m.opts).Attributes()
+	set := metric.NewRecordConfig(m.recOpts).Attributes()
 	return m.val, set.ToSlice()
 }
 

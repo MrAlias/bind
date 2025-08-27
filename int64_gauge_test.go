@@ -16,13 +16,16 @@ import (
 type mockInt64Gauge struct {
 	embedded.Int64Gauge
 
-	val  *int64
-	opts []metric.RecordOption
+	name     string
+	instOpts []metric.Int64GaugeOption
+
+	val     *int64
+	recOpts []metric.RecordOption
 }
 
 func (m *mockInt64Gauge) Record(ctx context.Context, val int64, opts ...metric.RecordOption) {
 	m.val = &val
-	m.opts = opts
+	m.recOpts = opts
 }
 
 func (m *mockInt64Gauge) Instrument() metric.Int64Gauge {
@@ -30,7 +33,7 @@ func (m *mockInt64Gauge) Instrument() metric.Int64Gauge {
 }
 
 func (m *mockInt64Gauge) Recorded() (*int64, []attribute.KeyValue) {
-	set := metric.NewRecordConfig(m.opts).Attributes()
+	set := metric.NewRecordConfig(m.recOpts).Attributes()
 	return m.val, set.ToSlice()
 }
 

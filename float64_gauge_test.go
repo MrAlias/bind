@@ -16,13 +16,16 @@ import (
 type mockFloat64Gauge struct {
 	embedded.Float64Gauge
 
-	val  *float64
-	opts []metric.RecordOption
+	name     string
+	instOpts []metric.Float64GaugeOption
+
+	val     *float64
+	recOpts []metric.RecordOption
 }
 
 func (m *mockFloat64Gauge) Record(ctx context.Context, val float64, opts ...metric.RecordOption) {
 	m.val = &val
-	m.opts = opts
+	m.recOpts = opts
 }
 
 func (m *mockFloat64Gauge) Instrument() metric.Float64Gauge {
@@ -30,7 +33,7 @@ func (m *mockFloat64Gauge) Instrument() metric.Float64Gauge {
 }
 
 func (m *mockFloat64Gauge) Recorded() (*float64, []attribute.KeyValue) {
-	set := metric.NewRecordConfig(m.opts).Attributes()
+	set := metric.NewRecordConfig(m.recOpts).Attributes()
 	return m.val, set.ToSlice()
 }
 
