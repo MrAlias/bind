@@ -13,9 +13,9 @@ go get github.com/MrAlias/bind
 
 ```go
 import (
-	"github.com/MrAlias/bind"
-	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/metric"
+ "github.com/MrAlias/bind"
+ "go.opentelemetry.io/otel/attribute"
+ "go.opentelemetry.io/otel/metric"
 )
 
 // Example: Bind attributes to a Float64Counter
@@ -42,7 +42,8 @@ See [GoDoc] for full API documentation and examples.
 
 ## Contributing
 
-Contributions are welcome! Please open issues or pull requests on [GitHub](https://github.com/MrAlias/bind).
+Contributions are welcome!
+Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
 ## License
 
