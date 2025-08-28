@@ -1,7 +1,6 @@
 # bind
 
 [![CI](https://github.com/MrAlias/bind/actions/workflows/ci.yml/badge.svg)](https://github.com/MrAlias/bind/actions/workflows/ci.yml)
-[![golangci-lint](https://github.com/MrAlias/bind/actions/workflows/golangci-lint.yml/badge.svg)](https://github.com/MrAlias/bind/actions/workflows/golangci-lint.yml)
 [![codecov](https://codecov.io/gh/MrAlias/bind/branch/main/graph/badge.svg)](https://codecov.io/gh/MrAlias/bind)
 [![Go Report Card](https://goreportcard.com/badge/github.com/MrAlias/bind)](https://goreportcard.com/report/github.com/MrAlias/bind)
 [![Go Reference](https://pkg.go.dev/badge/github.com/MrAlias/bind.svg)](https://pkg.go.dev/github.com/MrAlias/bind)
