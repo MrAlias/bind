@@ -8,7 +8,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 `bind` is a Go library for binding [OpenTelemetry] synchronous metric instruments to attributes.
-This can greatly improver performance for instrumentation when measurements are only recorded for known static attribute sets.
+This can greatly improve performance for instrumentation when measurements are only recorded for known static attribute sets.
 
 ## Installation
 
