@@ -1,5 +1,13 @@
 # bind
 
+[![CI](https://github.com/MrAlias/bind/actions/workflows/ci.yml/badge.svg)](https://github.com/MrAlias/bind/actions/workflows/ci.yml)
+[![golangci-lint](https://github.com/MrAlias/bind/actions/workflows/golangci-lint.yml/badge.svg)](https://github.com/MrAlias/bind/actions/workflows/golangci-lint.yml)
+[![codecov](https://codecov.io/gh/MrAlias/bind/branch/main/graph/badge.svg)](https://codecov.io/gh/MrAlias/bind)
+[![Go Report Card](https://goreportcard.com/badge/github.com/MrAlias/bind)](https://goreportcard.com/report/github.com/MrAlias/bind)
+[![Go Reference](https://pkg.go.dev/badge/github.com/MrAlias/bind.svg)](https://pkg.go.dev/github.com/MrAlias/bind)
+[![GitHub release](https://img.shields.io/github/release/MrAlias/bind.svg)](https://github.com/MrAlias/bind/releases)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 `bind` is a Go library for binding [OpenTelemetry] synchronous metric instruments to attributes.
 This can greatly improver performance for instrumentation when measurements are only recorded for known static attribute sets.
 
