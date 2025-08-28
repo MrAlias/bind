@@ -23,7 +23,7 @@ type mockInt64Gauge struct {
 	recOpts []metric.RecordOption
 }
 
-func (m *mockInt64Gauge) Record(ctx context.Context, val int64, opts ...metric.RecordOption) {
+func (m *mockInt64Gauge) Record(_ context.Context, val int64, opts ...metric.RecordOption) {
 	m.val = &val
 	m.recOpts = opts
 }

@@ -23,7 +23,7 @@ type mockFloat64Histogram struct {
 	recOpts []metric.RecordOption
 }
 
-func (m *mockFloat64Histogram) Record(ctx context.Context, val float64, opts ...metric.RecordOption) {
+func (m *mockFloat64Histogram) Record(_ context.Context, val float64, opts ...metric.RecordOption) {
 	m.val = &val
 	m.recOpts = opts
 }
