@@ -1,0 +1,150 @@
+version: "2"
+run:
+  issues-exit-code: 1
+  tests: true
+linters:
+  default: none
+  enable:
+    - asasalint
+    - bodyclose
+    - cyclop
+    - depguard
+    - errcheck
+    - errorlint
+    - funlen
+    - gocognit
+    - gocritic
+    - gocyclo
+    - godot
+    - gosec
+    - govet
+    - ineffassign
+    - misspell
+    - nestif
+    - perfsprint
+    - revive
+    - staticcheck
+    - testifylint
+    - unconvert
+    - unparam
+    - unused
+    - usestdlibvars
+    - usetesting
+    - whitespace
+
+  settings:
+    depguard:
+      rules:
+        non-tests:
+          files:
+            - "!$test"
+          deny:
+            - pkg: testing
+            - pkg: github.com/stretchr/testify
+            - pkg: crypto/md5
+            - pkg: crypto/sha1
+            - pkg: crypto/**/pkix
+
+    gocritic:
+      disabled-checks:
+        - appendAssign
+        - commentedOutCode
+        - dupArg
+        - hugeParam
+        - importShadow
+        - preferDecodeRune
+        - rangeValCopy
+        - unnamedResult
+        - whyNoLint
+      enable-all: true
+
+    gosec:
+      excludes:
+        - G104 # Exclude audit errors not explicitly handled (common in tests)
+
+    misspell:
+      locale: US
+      ignore-rules:
+        - cancelled
+
+    revive:
+      confidence: 0.01
+      rules:
+        - name: blank-imports
+        - name: bool-literal-in-expr
+        - name: constant-logical-expr
+        - name: context-as-argument
+          arguments:
+            - allowTypesBefore: "*testing.T"
+          disabled: true
+        - name: context-keys-type
+        - name: deep-exit
+        - name: defer
+          arguments:
+            - - call-chain
+              - loop
+        - name: dot-imports
+        - name: duplicated-imports
+        - name: early-return
+          arguments:
+            - preserveScope
+        - name: empty-block
+        - name: empty-lines
+        - name: error-naming
+        - name: error-return
+        - name: error-strings
+        - name: errorf
+        - name: exported
+          arguments:
+            - sayRepetitiveInsteadOfStutters
+        - name: flag-parameter
+        - name: identical-branches
+        - name: if-return
+        - name: import-shadowing
+        - name: increment-decrement
+        - name: indent-error-flow
+          arguments:
+            - preserveScope
+        - name: package-comments
+        - name: range
+        - name: range-val-in-closure
+        - name: range-val-address
+        - name: redefines-builtin-id
+        - name: string-format
+          arguments:
+            - - panic
+              - /^[^\n]*$/
+              - must not contain line breaks
+        - name: struct-tag
+        - name: superfluous-else
+          arguments:
+            - preserveScope
+        - name: time-equal
+        - name: unconditional-recursion
+        - name: unexported-return
+        - name: unhandled-error
+          arguments:
+            - fmt.Fprint
+            - fmt.Fprintf
+            - fmt.Fprintln
+            - fmt.Print
+            - fmt.Printf
+            - fmt.Println
+        - name: unused-parameter
+        - name: unused-receiver
+        - name: unnecessary-stmt
+        - name: use-any
+        - name: useless-break
+        - name: var-declaration
+        - name: var-naming
+          arguments:
+            - ["ID"] # AllowList
+            - ["Otel", "Aws", "Gcp"] # DenyList
+        - name: waitgroup-by-value
+
+    testifylint:
+      enable-all: true
+      disable:
+        - float-compare
+        - go-require
+        - require-error

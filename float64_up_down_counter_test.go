@@ -23,7 +23,7 @@ type mockFloat64UpDownCounter struct {
 	addOpts []metric.AddOption
 }
 
-func (m *mockFloat64UpDownCounter) Add(ctx context.Context, incr float64, opts ...metric.AddOption) {
+func (m *mockFloat64UpDownCounter) Add(_ context.Context, incr float64, opts ...metric.AddOption) {
 	m.incr = &incr
 	m.addOpts = opts
 }

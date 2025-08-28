@@ -57,7 +57,6 @@ func errOr[T any](t T, err error) (*T, error) {
 	return &t, nil
 }
 
-// Error-returning meter for testing error cases
 func TestMeterEmptyAttrs(t *testing.T) {
 	mock := &mockMeter{}
 	got := bind.Meter(mock)
@@ -130,7 +129,6 @@ func testMeterInst[T any](instFn func(m metric.Meter) (T, error)) func(*testing.
 	}
 }
 
-// Test all instrument creation methods
 func TestMeterInstruments(t *testing.T) {
 	const name = "test_instrument"
 
