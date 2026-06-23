@@ -57,6 +57,11 @@ func (i int64Gauge) Unwrap() (metric.Int64Gauge, attribute.Set) {
 	return i.inst, i.set
 }
 
+// Enabled reports whether the underlying instrument will process measurements.
+func (i int64Gauge) Enabled(ctx context.Context) bool {
+	return i.inst.Enabled(ctx)
+}
+
 // Record records the instantaneous value. All measurements made will
 // include the attributes bound to the instrument.
 func (i int64Gauge) Record(ctx context.Context, value int64, opts ...metric.RecordOption) {

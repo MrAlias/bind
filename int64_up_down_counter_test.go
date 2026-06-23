@@ -28,6 +28,10 @@ func (m *mockInt64UpDownCounter) Add(_ context.Context, incr int64, opts ...metr
 	m.addOpts = opts
 }
 
+func (m *mockInt64UpDownCounter) Enabled(context.Context) bool {
+	return true
+}
+
 func (m *mockInt64UpDownCounter) Instrument() metric.Int64UpDownCounter {
 	return m
 }

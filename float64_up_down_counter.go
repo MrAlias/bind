@@ -57,6 +57,11 @@ func (i float64UpDownCounter) Unwrap() (metric.Float64UpDownCounter, attribute.S
 	return i.inst, i.set
 }
 
+// Enabled reports whether the underlying instrument will process measurements.
+func (i float64UpDownCounter) Enabled(ctx context.Context) bool {
+	return i.inst.Enabled(ctx)
+}
+
 // Add records a change to the counter. All measurements made will
 // include the attributes bound to the instrument.
 func (i float64UpDownCounter) Add(ctx context.Context, incr float64, opts ...metric.AddOption) {

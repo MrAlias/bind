@@ -28,6 +28,10 @@ func (m *mockFloat64Counter) Add(_ context.Context, incr float64, opts ...metric
 	m.addOpts = opts
 }
 
+func (m *mockFloat64Counter) Enabled(context.Context) bool {
+	return true
+}
+
 func (m *mockFloat64Counter) Instrument() metric.Float64Counter {
 	return m
 }

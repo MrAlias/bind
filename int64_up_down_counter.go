@@ -57,6 +57,11 @@ func (i int64UpDownCounter) Unwrap() (metric.Int64UpDownCounter, attribute.Set) 
 	return i.inst, i.set
 }
 
+// Enabled reports whether the underlying instrument will process measurements.
+func (i int64UpDownCounter) Enabled(ctx context.Context) bool {
+	return i.inst.Enabled(ctx)
+}
+
 // Add increments or decrements the counter by incr. All measurements made will
 // include the attributes bound to the instrument.
 func (i int64UpDownCounter) Add(ctx context.Context, incr int64, opts ...metric.AddOption) {

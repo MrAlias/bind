@@ -28,6 +28,10 @@ func (m *mockInt64Gauge) Record(_ context.Context, val int64, opts ...metric.Rec
 	m.recOpts = opts
 }
 
+func (m *mockInt64Gauge) Enabled(context.Context) bool {
+	return true
+}
+
 func (m *mockInt64Gauge) Instrument() metric.Int64Gauge {
 	return m
 }

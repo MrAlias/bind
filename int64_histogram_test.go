@@ -28,6 +28,10 @@ func (m *mockInt64Histogram) Record(_ context.Context, val int64, opts ...metric
 	m.recOpts = opts
 }
 
+func (m *mockInt64Histogram) Enabled(context.Context) bool {
+	return true
+}
+
 func (m *mockInt64Histogram) Instrument() metric.Int64Histogram {
 	return m
 }
