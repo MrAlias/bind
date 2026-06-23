@@ -21,11 +21,16 @@ type mockFloat64Histogram struct {
 
 	val     *float64
 	recOpts []metric.RecordOption
+	enabled bool
 }
 
 func (m *mockFloat64Histogram) Record(_ context.Context, val float64, opts ...metric.RecordOption) {
 	m.val = &val
 	m.recOpts = opts
+}
+
+func (m *mockFloat64Histogram) Enabled(context.Context) bool {
+	return m.enabled
 }
 
 func (m *mockFloat64Histogram) Instrument() metric.Float64Histogram {
@@ -62,6 +67,16 @@ func TestFloat64Histogram(t *testing.T) {
 		"NoSideEffets",
 		testNoSideEffects(bind.Float64Histogram, &mockFloat64Histogram{}),
 	)
+}
+
+func TestFloat64HistogramEnabled(t *testing.T) {
+	mock := &mockFloat64Histogram{enabled: true}
+	bound := bind.Float64Histogram(mock, userAlice)
+	require.NotNil(t, bound, "bound should not be nil")
+	assert.True(t, bound.Enabled(context.Background()), "enabled should delegate")
+
+	mock.enabled = false
+	assert.False(t, bound.Enabled(context.Background()), "enabled should delegate")
 }
 
 func measFloat64Histogram(i metric.Float64Histogram, ctx context.Context, val float64, attr []attribute.KeyValue) {

@@ -21,11 +21,16 @@ type mockFloat64UpDownCounter struct {
 
 	incr    *float64
 	addOpts []metric.AddOption
+	enabled bool
 }
 
 func (m *mockFloat64UpDownCounter) Add(_ context.Context, incr float64, opts ...metric.AddOption) {
 	m.incr = &incr
 	m.addOpts = opts
+}
+
+func (m *mockFloat64UpDownCounter) Enabled(context.Context) bool {
+	return m.enabled
 }
 
 func (m *mockFloat64UpDownCounter) Instrument() metric.Float64UpDownCounter {
@@ -62,6 +67,16 @@ func TestFloat64UpDownCounter(t *testing.T) {
 		"NoSideEffets",
 		testNoSideEffects(bind.Float64UpDownCounter, &mockFloat64UpDownCounter{}),
 	)
+}
+
+func TestFloat64UpDownCounterEnabled(t *testing.T) {
+	mock := &mockFloat64UpDownCounter{enabled: true}
+	bound := bind.Float64UpDownCounter(mock, userAlice)
+	require.NotNil(t, bound, "bound should not be nil")
+	assert.True(t, bound.Enabled(context.Background()), "enabled should delegate")
+
+	mock.enabled = false
+	assert.False(t, bound.Enabled(context.Background()), "enabled should delegate")
 }
 
 func measFloat64UpDownCounter(i metric.Float64UpDownCounter, ctx context.Context, incr float64, attr []attribute.KeyValue) {

@@ -21,11 +21,16 @@ type mockFloat64Gauge struct {
 
 	val     *float64
 	recOpts []metric.RecordOption
+	enabled bool
 }
 
 func (m *mockFloat64Gauge) Record(_ context.Context, val float64, opts ...metric.RecordOption) {
 	m.val = &val
 	m.recOpts = opts
+}
+
+func (m *mockFloat64Gauge) Enabled(context.Context) bool {
+	return m.enabled
 }
 
 func (m *mockFloat64Gauge) Instrument() metric.Float64Gauge {
@@ -62,6 +67,16 @@ func TestFloat64Gauge(t *testing.T) {
 		"NoSideEffets",
 		testNoSideEffects(bind.Float64Gauge, &mockFloat64Gauge{}),
 	)
+}
+
+func TestFloat64GaugeEnabled(t *testing.T) {
+	mock := &mockFloat64Gauge{enabled: true}
+	bound := bind.Float64Gauge(mock, userAlice)
+	require.NotNil(t, bound, "bound should not be nil")
+	assert.True(t, bound.Enabled(context.Background()), "enabled should delegate")
+
+	mock.enabled = false
+	assert.False(t, bound.Enabled(context.Background()), "enabled should delegate")
 }
 
 func measFloat64Gauge(i metric.Float64Gauge, ctx context.Context, val float64, attr []attribute.KeyValue) {

@@ -21,11 +21,16 @@ type mockInt64Counter struct {
 
 	incr    *int64
 	addOpts []metric.AddOption
+	enabled bool
 }
 
 func (m *mockInt64Counter) Add(_ context.Context, incr int64, opts ...metric.AddOption) {
 	m.incr = &incr
 	m.addOpts = opts
+}
+
+func (m *mockInt64Counter) Enabled(context.Context) bool {
+	return m.enabled
 }
 
 func (m *mockInt64Counter) Instrument() metric.Int64Counter {
@@ -62,6 +67,16 @@ func TestInt64Counter(t *testing.T) {
 		"NoSideEffets",
 		testNoSideEffects(bind.Int64Counter, &mockInt64Counter{}),
 	)
+}
+
+func TestInt64CounterEnabled(t *testing.T) {
+	mock := &mockInt64Counter{enabled: true}
+	bound := bind.Int64Counter(mock, userAlice)
+	require.NotNil(t, bound, "bound should not be nil")
+	assert.True(t, bound.Enabled(context.Background()), "enabled should delegate")
+
+	mock.enabled = false
+	assert.False(t, bound.Enabled(context.Background()), "enabled should delegate")
 }
 
 func measInt64Counter(i metric.Int64Counter, ctx context.Context, incr int64, attr []attribute.KeyValue) {

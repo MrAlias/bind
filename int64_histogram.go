@@ -57,6 +57,11 @@ func (i int64Histogram) Unwrap() (metric.Int64Histogram, attribute.Set) {
 	return i.inst, i.set
 }
 
+// Enabled reports whether the underlying instrument will process measurements.
+func (i int64Histogram) Enabled(ctx context.Context) bool {
+	return i.inst.Enabled(ctx)
+}
+
 // Record adds a value to the histogram. All measurements made will
 // include the attributes bound to the instrument.
 func (i int64Histogram) Record(ctx context.Context, value int64, opts ...metric.RecordOption) {
