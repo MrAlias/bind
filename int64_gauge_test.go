@@ -21,6 +21,7 @@ type mockInt64Gauge struct {
 
 	val     *int64
 	recOpts []metric.RecordOption
+	enabled bool
 }
 
 func (m *mockInt64Gauge) Record(_ context.Context, val int64, opts ...metric.RecordOption) {
@@ -29,7 +30,7 @@ func (m *mockInt64Gauge) Record(_ context.Context, val int64, opts ...metric.Rec
 }
 
 func (m *mockInt64Gauge) Enabled(context.Context) bool {
-	return true
+	return m.enabled
 }
 
 func (m *mockInt64Gauge) Instrument() metric.Int64Gauge {
@@ -66,6 +67,16 @@ func TestInt64Gauge(t *testing.T) {
 		"NoSideEffets",
 		testNoSideEffects(bind.Int64Gauge, &mockInt64Gauge{}),
 	)
+}
+
+func TestInt64GaugeEnabled(t *testing.T) {
+	mock := &mockInt64Gauge{enabled: true}
+	bound := bind.Int64Gauge(mock, userAlice)
+	require.NotNil(t, bound, "bound should not be nil")
+	assert.True(t, bound.Enabled(context.Background()), "enabled should delegate")
+
+	mock.enabled = false
+	assert.False(t, bound.Enabled(context.Background()), "enabled should delegate")
 }
 
 func measInt64Gauge(i metric.Int64Gauge, ctx context.Context, val int64, attr []attribute.KeyValue) {
